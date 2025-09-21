@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import JSONResponse
+import uvicorn
 from typing import Optional
 import json
 import os
@@ -56,4 +57,12 @@ async def send_photo(
 async def root():
     return {"message": "FastAPI backend is running"}
 
+
+if __name__ == "__main__":
+    port_str = os.getenv("PORT", "8000")
+    try:
+        port = int(port_str)
+    except ValueError:
+        port = 8000
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=os.getenv("RELOAD", "false").lower() == "true")
 
